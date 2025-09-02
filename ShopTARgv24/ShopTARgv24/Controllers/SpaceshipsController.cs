@@ -25,7 +25,8 @@ namespace ShopTARgv24.Controllers
                     Id = x.Id,
                     Name = x.Name,
                     BuiltDate = x.BuiltDate,
-                    TypeName = x.TypeName
+                    TypeName = x.TypeName,
+                    Crew = x.Crew
                 });
 
             return View(result);
