@@ -1,4 +1,5 @@
-﻿using ShopTARgv24.Core.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using ShopTARgv24.Core.Domain;
 using ShopTARgv24.Core.Dto;
 using ShopTARgv24.Core.ServiceInterface;
 using ShopTARgv24.Data;
@@ -37,6 +38,14 @@ namespace ShopTARgv24.ApplicationServices.Services
             await _context.SaveChangesAsync();
 
             return spaceship;
+        }
+
+        public async Task<Spaceship> DetailAsync(Guid id)
+        {
+            var result = await _context.Spaceships
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return result;
         }
     }
 }

@@ -6,5 +6,6 @@ namespace ShopTARgv24.Core.ServiceInterface
     public interface ISpaceshipsServices
     {
         Task<Spaceship> Create(SpaceshipDto dto);
+        Task<Spaceship> DetailAsync(Guid id);
     }
 }
