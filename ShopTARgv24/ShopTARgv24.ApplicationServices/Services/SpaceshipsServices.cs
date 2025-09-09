@@ -47,5 +47,16 @@ namespace ShopTARgv24.ApplicationServices.Services
 
             return result;
         }
+
+        public async Task<Spaceship> Delete(Guid id)
+        {
+            var spaceship = await _context.Spaceships
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            _context.Spaceships.Remove(spaceship);
+            await _context.SaveChangesAsync();
+
+            return spaceship;
+        }
     }
 }
