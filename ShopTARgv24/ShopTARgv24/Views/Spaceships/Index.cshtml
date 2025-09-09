@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<ShopTARgv24.Models.Spaceships.SpaceshipsIndexViewModel>
 
+    @{
+        int rowNumber = 1;
+    }
+
 <div class="h1">
     Spaceships
 </div>
@@ -18,12 +22,14 @@
             @foreach(var spaceships in Model)
             {
                 <tr>
-                    <td>Nr</td>
+                    <td>@rowNumber</td>
                     <td>@spaceships.Name</td>
                     <td>@spaceships.TypeName</td>
                     <td>@spaceships.BuiltDate</td>
                     <td>@spaceships.Crew</td>
                 </tr>
+
+                rowNumber += 1;
             }
         </tbody>
     </table>
