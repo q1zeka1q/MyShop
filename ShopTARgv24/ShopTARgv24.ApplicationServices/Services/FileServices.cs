@@ -2,10 +2,11 @@
 using ShopTARgv24.Data;
 using Microsoft.Extensions.Hosting;
 using ShopTARgv24.Core.Domain;
+using ShopTARgv24.Core.ServiceInterface;
 
 namespace ShopTARgv24.ApplicationServices.Services
 {
-    public class FileServices
+    public class FileServices : IFileServices
     {
         private readonly ShopTARgv24Context _context;
         private readonly IHostEnvironment _webHost;
