@@ -10,5 +10,6 @@ namespace ShopTARgv24.Data
         : base(options) { }
 
         public DbSet<Spaceship> Spaceships { get; set; }
+        public DbSet<FileToApi> FileToApis { get; set; }
     }
 }
