@@ -14,7 +14,12 @@ namespace ShopTARgv24
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddScoped<IFileServices, FileServices>();
+
+
             builder.Services.AddScoped<ISpaceshipsServices, SpaceshipsServices>();
+
+            builder.Services.AddScoped<IKindergardensServices, KindergardensServices>();
 
             builder.Services.AddDbContext<ShopTARgv24Context>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

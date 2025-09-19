@@ -55,5 +55,41 @@ namespace ShopTARgv24.ApplicationServices.Services
                 }
             }
         }
+
+
+        public void FilesToApi(KindergardenDto dto, Kindergarden kindergarden)
+        {
+            if (dto.Files != null && dto.Files.Count > 0)
+            {
+                if (!Directory.Exists(_webHost.ContentRootPath + "\\multipleFileUpload\\"))
+                {
+                    Directory.CreateDirectory(_webHost.ContentRootPath + "\\multipleFileUpload\\");
+                }
+
+                foreach (var file in dto.Files)
+                {
+                    //muutuja string uploadsFolder ja sinna laetakse failid
+                    string uploadsFolder = Path.Combine(_webHost.ContentRootPath, "multipleFileUpload");
+                    //muutuja string uniqueFileName ja siin genereeritakse uus Guid ja lisatakse see faili ette
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.Name;
+                    //muutuja string filePath kombineeritakse ja lisatakse koos kausta unikaalse nimega
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+
+                        FileToApi path = new FileToApi
+                        {
+                            Id = Guid.NewGuid(),
+                            ExistingFilePath = uniqueFileName,
+                            KindergardenId = kindergarden.Id
+                        };
+
+                        _context.FileToApis.AddAsync(path);
+                    }
+                }
+            }
+        }
     }
 }
