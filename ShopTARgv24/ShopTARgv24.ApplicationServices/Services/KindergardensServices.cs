@@ -33,7 +33,6 @@ namespace ShopTARgv24.ApplicationServices.Services
             kindergarden.TeacherName = dto.TeacherName;
             kindergarden.CreatedAt = DateTime.Now;
             kindergarden.UpdatedAt = DateTime.Now;
-            _fileServices.FilesToApi(dto, kindergarden);
 
             await _context.Kindergardens.AddAsync(kindergarden);
             await _context.SaveChangesAsync();
