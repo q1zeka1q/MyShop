@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ShopTARgv24.ApplicationServices.Services;
 using ShopTARgv24.Core.ServiceInterface;
 using ShopTARgv24.Data;
+using ShopTARgv24.Models.Spaceships;
 
 namespace ShopTARgv24
 {
@@ -15,7 +16,7 @@ namespace ShopTARgv24
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ISpaceshipsServices, SpaceshipsServices>();
-
+            builder.Services.AddScoped<IFileServices, FileServices>();   
             builder.Services.AddDbContext<ShopTARgv24Context>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -29,10 +30,15 @@ namespace ShopTARgv24
                 app.UseHsts();
             }
 
+
+
+            
             app.UseHttpsRedirection();
             app.UseRouting();
-
+        
             app.UseAuthorization();
+
+            app.UseStaticFiles();
 
             app.MapStaticAssets();
             app.MapControllerRoute(

@@ -80,4 +80,9 @@
         <input type="submit" value="Delete" class="btn btn-danger" />
         <a asp-action="index" asp-controller="spaceships" class="btn btn-primary">Back</a>
     </form>
+
+    @foreach (var images in Model.Image)
+    {
+        <partial name="_Images" model="images" />
+    }
 </div>

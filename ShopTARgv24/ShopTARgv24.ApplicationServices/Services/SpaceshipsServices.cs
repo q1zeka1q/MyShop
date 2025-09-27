@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿﻿using Microsoft.EntityFrameworkCore;
 using ShopTARgv24.Core.Domain;
 using ShopTARgv24.Core.Dto;
 using ShopTARgv24.Core.ServiceInterface;
@@ -57,6 +57,16 @@ namespace ShopTARgv24.ApplicationServices.Services
             var spaceship = await _context.Spaceships
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            var images = await _context.FileToApis
+                .Where(x => x.SpaceshipId == id)
+                .Select(y => new FileToApiDto
+                {
+                    Id = y.Id,
+                    SpaceshipId = y.SpaceshipId,
+                    ExistingFilePath = y.ExistingFilePath
+                }).ToArrayAsync();
+
+            await _fileServices.RemoveImageFromApi(images);
             _context.Spaceships.Remove(spaceship);
             await _context.SaveChangesAsync();
 
@@ -77,6 +87,7 @@ namespace ShopTARgv24.ApplicationServices.Services
             domain.InnerVolume = dto.InnerVolume;
             domain.CreatedAt = dto.CreatedAt;
             domain.ModifiedAt = DateTime.Now;
+            _fileServices.FilesToApi(dto, domain);
 
             _context.Spaceships.Update(domain);
             await _context.SaveChangesAsync();
