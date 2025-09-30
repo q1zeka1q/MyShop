@@ -31,7 +31,7 @@ namespace ShopTARgv24.Controllers
         public IActionResult Index()
         {
             var result = _context.Spaceships
-                .Select(x => new SpaceshipsIndexViewModel
+                .Select(x => new RealEstatesIndexViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -105,7 +105,7 @@ namespace ShopTARgv24.Controllers
                     ImageId = y.Id,
                 }).ToArrayAsync();
 
-            var vm = new SpaceshipDeleteViewModel();
+            var vm = new RealEstateDeleteViewModel();
 
             vm.Id = spaceship.Id;
             vm.Name = spaceship.Name;
@@ -225,7 +225,7 @@ namespace ShopTARgv24.Controllers
                     ImageId = y.Id,
                 }).ToArrayAsync();
 
-            var vm = new SpaceshipDetailsViewModel();
+            var vm = new RealEstateDetailsViewModel();
 
             vm.Id = spaceship.Id;
             vm.Name = spaceship.Name;

@@ -39,6 +39,35 @@ namespace ShopTARgv24.Data.Migrations
                     b.ToTable("FileToApis");
                 });
 
+            modelBuilder.Entity("ShopTARgv24.Core.Domain.RealEstate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("Area")
+                        .HasColumnType("float");
+
+                    b.Property<string>("BuildingType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("RoomNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RealEstate");
+                });
+
             modelBuilder.Entity("ShopTARgv24.Core.Domain.Spaceship", b =>
                 {
                     b.Property<Guid>("Id")

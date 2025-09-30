@@ -12,8 +12,8 @@ using ShopTARgv24.Data;
 namespace ShopTARgv24.Data.Migrations
 {
     [DbContext(typeof(ShopTARgv24Context))]
-    [Migration("20250902161755_init")]
-    partial class init
+    [Migration("20250930150812_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,52 @@ namespace ShopTARgv24.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ShopTARgv24.Core.Domain.FileToApi", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExistingFilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SpaceshipId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileToApis");
+                });
+
+            modelBuilder.Entity("ShopTARgv24.Core.Domain.RealEstate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("Area")
+                        .HasColumnType("float");
+
+                    b.Property<string>("BuildingType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("RoomNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RealEstate");
+                });
 
             modelBuilder.Entity("ShopTARgv24.Core.Domain.Spaceship", b =>
                 {
