@@ -26,13 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\multipleFileUpload\0255380c-1d57-415e-91d9-1bf2c1fc3ff2_Soyuz_TMA-7_spacecraft2edit1.jpg" />
-    <None Include="wwwroot\multipleFileUpload\ccbdf619-bd28-48f7-96ee-123a6840c79c_Soyuz_TMA-7_spacecraft2edit1.jpg" />
-    <None Include="wwwroot\multipleFileUpload\dd6306fb-4624-425d-b68f-bba2e2e6fd0c_Soyuz_TMA-7_spacecraft2edit1.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="multipleFileUpload\" />
+    <Folder Include="wwwroot\multipleFileUpload\" />
   </ItemGroup>
 
 </Project>
