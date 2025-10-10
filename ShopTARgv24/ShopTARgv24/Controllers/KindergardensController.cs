@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using ShopTARgv24.Core.Domain;
 using ShopTARgv24.Core.Dto;
 using ShopTARgv24.Core.ServiceInterface;
@@ -17,11 +18,11 @@ namespace ShopTARgv24.Controllers
         public KindergardensController
             (
                 ShopTARgv24Context context,
-                IKindergardensServices spaceshipsServices
+                IKindergardensServices KindergardensServices
             )
         {
             _context = context;
-            _kindergardensServices = spaceshipsServices;
+            _kindergardensServices = KindergardensServices;
         }
 
         public IActionResult Index()
@@ -58,7 +59,16 @@ namespace ShopTARgv24.Controllers
                 KindergardenName = vm.KindergardenName,
                 TeacherName = vm.TeacherName,
                 CreatedAt = vm.CreatedAt,
-                UpdatedAt = vm.UpdatedAt
+                UpdatedAt = vm.UpdatedAt,
+                Files = vm.Files,
+                Image = vm.Image
+                    .Select(x => new FileToDatabaseDto
+                    {
+                        Id = x.Id,
+                        ImageData = x.ImageData,
+                        ImageTitle = x.ImageTitle,
+                        KindergardenId = x.KindergardenId,
+                    }).ToArray()
             };
 
             var result = await _kindergardensServices.Create(dto);
@@ -81,6 +91,8 @@ namespace ShopTARgv24.Controllers
                 return NotFound();
             }
 
+            KindergardenImageViewModel[] photos = await FilesFromDatabase(id);
+
             var vm = new KindergardenDeleteViewModel();
 
             vm.Id = kindergarden.Id;
@@ -90,6 +102,7 @@ namespace ShopTARgv24.Controllers
             vm.TeacherName = kindergarden.TeacherName;
             vm.CreatedAt = kindergarden.CreatedAt;
             vm.UpdatedAt = kindergarden.UpdatedAt;
+            vm.Image.AddRange(photos);
 
             return View(vm);
         }
@@ -127,6 +140,7 @@ namespace ShopTARgv24.Controllers
             vm.CreatedAt = kindergarden.CreatedAt;
             vm.UpdatedAt = kindergarden.UpdatedAt;
 
+
             return View("CreateUpdate", vm);
         }
 
@@ -162,6 +176,7 @@ namespace ShopTARgv24.Controllers
             {
                 return NotFound();
             }
+            KindergardenImageViewModel[] photos = await FilesFromDatabase(id);
 
             var vm = new KindergardenDetailsViewModel();
 
@@ -172,8 +187,23 @@ namespace ShopTARgv24.Controllers
             vm.TeacherName = kindergarden.TeacherName;
             vm.CreatedAt = kindergarden.CreatedAt;
             vm.UpdatedAt = kindergarden.UpdatedAt;
+            vm.Image.AddRange(photos);
 
             return View(vm);
         }
+        private async Task<KindergardenImageViewModel[]> FilesFromDatabase(Guid id)
+        {
+            return await _context.FileToDatabase
+                .Where(x => x.KindergardenId == id)
+                .Select(y => new KindergardenImageViewModel
+                {
+                    KindergardenId = y.Id,
+                    Id = y.Id,
+                    ImageData = y.ImageData,
+                    ImageTitle = y.ImageTitle,
+                    Image = string.Format("data:image/gif;base64, {0}", Convert.ToBase64String(y.ImageData))
+                }).ToArrayAsync();
+        }
+
     }
 }

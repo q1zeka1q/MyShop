@@ -5,6 +5,7 @@ using ShopTARgv24.Core.ServiceInterface;
 using ShopTARgv24.Data;
 
 
+
 namespace ShopTARgv24.ApplicationServices.Services
 {
     public class KindergardensServices : IKindergardensServices
@@ -33,6 +34,11 @@ namespace ShopTARgv24.ApplicationServices.Services
             kindergarden.TeacherName = dto.TeacherName;
             kindergarden.CreatedAt = DateTime.Now;
             kindergarden.UpdatedAt = DateTime.Now;
+
+            if (dto.Files != null)
+            {
+                _fileServices.UploadFilesToDatabase(dto, kindergarden);
+            }
 
             await _context.Kindergardens.AddAsync(kindergarden);
             await _context.SaveChangesAsync();
