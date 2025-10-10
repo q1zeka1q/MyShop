@@ -1,6 +1,6 @@
 ﻿namespace ShopTARgv24.Models.Spaceships
 {
-    public class RealEstatesIndexViewModel
+    public class SpaceshipsIndexViewModel
     {
         public Guid? Id { get; set; }
         public string? Name { get; set; }

@@ -66,12 +66,13 @@ namespace ShopTARgv24.ApplicationServices.Services
                     ExistingFilePath = y.ExistingFilePath
                 }).ToArrayAsync();
 
-            await _fileServices.RemoveImageFromApi(images);
+            await _fileServices.RemoveImagesFromApi(images);
             _context.Spaceships.Remove(spaceship);
             await _context.SaveChangesAsync();
 
             return spaceship;
         }
+
 
         public async Task<Spaceship> Update(SpaceshipDto dto)
         {

@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ShopTARgv24.Core.Dto;
+using ShopTARgv24.Data;
 using Microsoft.Extensions.Hosting;
 using ShopTARgv24.Core.Domain;
-using ShopTARgv24.Core.Dto;
 using ShopTARgv24.Core.ServiceInterface;
-using ShopTARgv24.Data;
-using static System.Net.Mime.MediaTypeNames;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShopTARgv24.ApplicationServices.Services
 {
@@ -79,8 +78,9 @@ namespace ShopTARgv24.ApplicationServices.Services
             return imageId;
         }
 
-        public async Task<List<FileToApi>> RemoveImageFromApi(FileToApiDto[] dtos )
+        public async Task<List<FileToApi>> RemoveImagesFromApi(FileToApiDto[] dtos)
         {
+            //foreach, mille sees toimub failide kustutamine
             foreach (var dto in dtos)
             {
                 var imageId = await _context.FileToApis
@@ -99,8 +99,34 @@ namespace ShopTARgv24.ApplicationServices.Services
                 await _context.SaveChangesAsync();
             }
 
-
             return null;
+        }
+
+        public void UploadFilesToDatabase(RealEstateDto dto, RealEstate domain)
+        {
+            //tuleb ära kontrollida, kas on üks fail või mitu
+            if (dto.Files != null && dto.Files.Count > 0)
+            {
+                //kui tuleb mitu faili, siis igaks juhuks tuleks kasutada foreachi
+                foreach (var file in dto.Files)
+                {
+                    //foreachi sees kasutada using-t ja ära mappida
+                    using (var target = new MemoryStream())
+                    {
+                        FileToDatabase files = new FileToDatabase()
+                        {
+                            Id = Guid.NewGuid(),
+                            ImageTitle = file.FileName,
+                            RealEstateId = domain.Id
+                        };
+                        //salvestada andmed andmebaasi
+                        file.CopyTo(target);
+                        files.ImageData = target.ToArray();
+
+                        _context.FileToDatabase.Add(files);
+                    }
+                }
+            }
         }
     }
 }
