@@ -15,11 +15,8 @@ namespace ShopTARgv24.Core.Domain
         public string? TeacherName { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        
 
-        //Teha uus branch nimega Kindergarden
-        //Teha uus CRUD lasamine, vaatamine, uuendamine ja andmete kustutamine.
-        //Teemaks on Kindergarden
-        //Muutujateks on ID, GroupName, ChildrenCount, KindergardenName, TeacherName, CreatedAt, UpdatedAt
-        //Too on hindeline. Too panna githubi ja link saata emailile. Tunnis naitad ette
+
     }
 }
