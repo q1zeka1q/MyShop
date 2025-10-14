@@ -3,6 +3,8 @@ using ShopTARgv24.Core.Domain;
 using ShopTARgv24.Core.Dto;
 using ShopTARgv24.Core.ServiceInterface;
 using ShopTARgv24.Data;
+using ShopTARgv24.Data.Migrations;
+using Kindergarden = ShopTARgv24.Core.Domain.Kindergarden;
 
 
 
@@ -54,33 +56,65 @@ namespace ShopTARgv24.ApplicationServices.Services
             return result;
         }
 
-        public async Task<Kindergarden> Delete(Guid id)
-        {
-            var kindergarden = await _context.Kindergardens
-                .FirstOrDefaultAsync(x => x.Id == id);
+        /* public async Task<Kindergarden> Delete(Guid id)
+         {
+             var kindergarden = await _context.Kindergardens
+                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            _context.Kindergardens.Remove(kindergarden);
-            await _context.SaveChangesAsync();
+             _context.Kindergardens.Remove(kindergarden);
+             await _context.SaveChangesAsync();
 
-            return kindergarden;
-        }
+             return kindergarden;
+         }*/
 
         public async Task<Kindergarden> Update(KindergardenDto dto)
         {
-            Kindergarden domain = new();
+            // Получаем существующую запись из базы данных
+            var domain = await _context.Kindergardens.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
-            domain.Id = dto.Id;
+            if (domain == null)
+                return null;
+
+            // Обновляем только нужные поля
             domain.GroupName = dto.GroupName;
             domain.ChildrenCount = dto.ChildrenCount;
             domain.KindergardenName = dto.KindergardenName;
             domain.TeacherName = dto.TeacherName;
-            domain.CreatedAt = dto.CreatedAt;
             domain.UpdatedAt = DateTime.Now;
 
-            _context.Kindergardens.Update(domain);
+            // Сохраняем новые файлы, если есть
+            if (dto.Files != null && dto.Files.Count > 0)
+            {
+                _fileServices.UploadFilesToDatabase(dto, domain);
+            }
+
             await _context.SaveChangesAsync();
 
             return domain;
+        }
+        
+
+        public async Task<Kindergarden> Delete(Guid id)
+        {
+            var kindergarten = await _context.Kindergardens
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            var images = await _context.FileToDatabase
+                .Where(x => x.KindergardenId == id)
+                .Select(y => new FileToDatabaseDto
+                {
+                    ImageId = y.Id,
+                    ImageData = y.ImageData,
+                    ImageTitle = y.ImageTitle,
+                    KindergardenId = y.KindergardenId
+                }).ToArrayAsync();
+
+            await _fileServices.RemoveImagesFromDatabase(images);
+
+            _context.Kindergardens.Remove(kindergarten);
+            await _context.SaveChangesAsync();
+
+            return kindergarten;
         }
     }
 }

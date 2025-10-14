@@ -46,21 +46,26 @@ else
             </div>
         </div>
 
-        <div>
-            @foreach (var images in Model.Image)
-            {
-                <partial name="_Images" model="images" />
-            }
-        </div>
-        <div class="form-group row">
-            <label asp-for="Files" class="col-sm-2 col-form-label"></label>
-            <div class="col-sm-5">
+        <div class="form-group row m-3">
+            <label asp-for="Files" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9">
                 <div class="custom-file">
                     <input class="form-control" asp-for="Files" multiple type="file" />
                 </div>
             </div>
         </div>
+        <div>
+            @foreach (var images in Model.Image)
+            {
+                <div class="d-flex align-items-center mb-3">
+                    <partial name="_Images" model="images" />
+                    <input asp-action="RemoveImage" asp-controller="Kindergardens" asp-route-imageId="@images.ImageId"
+                           type="submit" class="btn btn-danger ms-3" value="Delete" />
+                </div>
+            }
+        </div>
 
+        <br />
         @if (Model.Id.HasValue)
         {
             <input asp-action="update" asp-controller="Kindergardens" type="submit" class="btn btn-primary" value="Update" />
