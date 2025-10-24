@@ -15,7 +15,7 @@ namespace ShopTARgv24.ApplicationServices.Services
         {
             //https://developer.accuweather.com/core-weather/text-search?lang=shell#city-search
 
-            string accuApiKey = "zpka_0c86f3fafa9147e58813fa06b647f221_9b9fd9d9";
+            string accuApiKey = "zpka_a7ebb21b0043419a82737a780790218e_388e171a";
             string baseUrl = "http://dataservice.accuweather.com/forecasts/v1/daily/1day/";
 
             using (var httpClient = new HttpClient())
@@ -48,7 +48,7 @@ namespace ShopTARgv24.ApplicationServices.Services
 
         public async Task<AccuLocationWeatherResultDto> AccuWeatherResultWebClient(AccuLocationWeatherResultDto dto)
         {
-            string accuApiKey = "zpka_0c86f3fafa9147e58813fa06b647f221_9b9fd9d9";
+            string accuApiKey = "zpka_a7ebb21b0043419a82737a780790218e_388e171a";
             string url = $"http://dataservice.accuweather.com/locations/v1/cities/search?apikey={accuApiKey}&q={dto.CityName}";
 
             using (WebClient client = new WebClient())
