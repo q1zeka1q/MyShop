@@ -4,6 +4,7 @@ using ShopTARgv24.Core.ServiceInterface;
 using ShopTARgv24.Data;
 using ShopTARgv24.Models.Spaceships;
 
+
 namespace ShopTARgv24
 {
     public class Program
@@ -19,6 +20,8 @@ namespace ShopTARgv24
             builder.Services.AddScoped<IRealEstateServices, RealEstateServices>();
             builder.Services.AddScoped<IFileServices, FileServices>();
             builder.Services.AddScoped<IWeatherForecastServices, WeatherForecastServices>();
+            builder.Services.AddHttpClient<IChuckNorrisServices, ChuckNorrisServices>();
+            builder.Services.AddHttpClient<ICocktailService, CocktailService>();
 
             builder.Services.AddDbContext<ShopTARgv24Context>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -1,0 +1,40 @@
+﻿@model ShopTARgv24.Core.Dto.DrinkResponseDto
+@{
+    ViewData["Title"] = "Cocktail search";
+    var q = Context.Request.Query["q"].ToString();
+}
+<h2>Cocktail search</h2>
+
+<form method="get" asp-action="Search" class="mb-3">
+    <div class="input-group">
+        <input name="q" class="form-control" placeholder="Type cocktail name…" value="@q" />
+        <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+
+@if (Model?.drinks == null || !Model.drinks.Any())
+{
+    <div class="alert alert-warning">Nothing found.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+        @foreach (var d in Model.drinks)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <img class="card-img-top" src="@d.strDrinkThumb" alt="@d.strDrink" />
+                    <div class="card-body">
+                        <h5 class="card-title">@d.strDrink</h5>
+                        <p class="card-text">
+                            <span class="badge bg-secondary">@d.strCategory</span>
+                            <span class="badge bg-info text-dark">@d.strAlcoholic</span>
+                            <span class="badge bg-light text-dark">@d.strGlass</span>
+                        </p>
+                        <a asp-action="Details" asp-route-id="@d.idDrink" class="btn btn-outline-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

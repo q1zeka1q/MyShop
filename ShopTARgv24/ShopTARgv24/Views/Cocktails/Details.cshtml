@@ -1,0 +1,56 @@
+﻿@model ShopTARgv24.Core.Dto.DrinkDto
+@{
+    ViewData["Title"] = Model.strDrink;
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <img src="@Model.strDrinkThumb" alt="@Model.strDrink" class="img-fluid rounded mb-3" />
+    </div>
+    <div class="col-md-7">
+        <h2>@Model.strDrink</h2>
+        <p>
+            <span class="badge bg-secondary">@Model.strCategory</span>
+            <span class="badge bg-info text-dark">@Model.strAlcoholic</span>
+            <span class="badge bg-light text-dark">@Model.strGlass</span>
+        </p>
+
+        <h4>Ingredients</h4>
+        @{
+            var ingredients = new (string? name, string? measure)[] {
+                (Model.strIngredient1, Model.strMeasure1),
+                (Model.strIngredient2, Model.strMeasure2),
+                (Model.strIngredient3, Model.strMeasure3),
+                (Model.strIngredient4, Model.strMeasure4),
+                (Model.strIngredient5, Model.strMeasure5),
+                (Model.strIngredient6, Model.strMeasure6),
+                (Model.strIngredient7, Model.strMeasure7),
+                (Model.strIngredient8, Model.strMeasure8),
+                (Model.strIngredient9, Model.strMeasure9),
+                (Model.strIngredient10, Model.strMeasure10),
+                (Model.strIngredient11, Model.strMeasure11),
+                (Model.strIngredient12, Model.strMeasure12),
+                (Model.strIngredient13, Model.strMeasure13),
+                (Model.strIngredient14, Model.strMeasure14),
+                (Model.strIngredient15, Model.strMeasure15),
+                };
+        }
+        <ul>
+            @foreach (var p in ingredients)
+            {
+                if (!string.IsNullOrWhiteSpace(p.name))
+                {
+                    <li>@p.name @if(!string.IsNullOrWhiteSpace(p.measure)){
+                    <text>— @p.measure</text>
+                }
+    </li>
+            }
+                        }
+        </ul>
+
+        <h4>Instructions</h4>
+        <p>@Model.strInstructions</p>
+
+        <a asp-action="Search" class="btn btn-outline-secondary">Back</a>
+    </div>
+</div>
