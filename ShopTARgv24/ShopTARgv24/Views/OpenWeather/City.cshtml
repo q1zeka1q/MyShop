@@ -1,0 +1,74 @@
+﻿@model ShopTARgv24.Models.OpenWeather.OpenWeatherViewModel
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-3 fw-bold" style="font-family: 'Poppins', sans-serif; color: #0d6efd;">
+                        🌤️ Forecast for the selected city
+                    </h2>
+                    <h3 class="text-center text-dark mb-4 fw-semibold">
+                        @Model.Name
+                    </h3>
+                    <hr class="mb-4" />
+
+                    <dl class="row mb-0" style="font-size: 1.05rem;">
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            🌡️ Temperature
+                        </dt>
+                        <dd class="col-sm-8 text-dark fw-medium">
+                            @Html.DisplayFor(model => model.Temp) °C
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            🤗 Feels like
+                        </dt>
+                        <dd class="col-sm-8 text-dark fw-medium">
+                            @Html.DisplayFor(model => model.feels_like) °C
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            ☁️ Description
+                        </dt>
+                        <dd class="col-sm-8 text-dark fw-medium text-capitalize">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            ⬇️ Pressure
+                        </dt>
+                        <dd class="col-sm-8 text-dark fw-medium">
+                            @Html.DisplayFor(model => model.Pressure) hPa
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            💧 Humidity
+                        </dt>
+                        <dd class="col-sm-8 text-dark fw-medium">
+                            @Html.DisplayFor(model => model.Humidity) %
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted fw-semibold">
+                            🌬️ Wind speed
+                        </dt>
+                        <dd class="col-sm-8 text-dark fw-medium">
+                            @Html.DisplayFor(model => model.Speed) m/s
+                        </dd>
+                    </dl>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <a asp-controller="openWeather" asp-action="Index"
+                           class="btn btn-gradient btn-lg rounded-3 shadow-sm"
+                           style="background: linear-gradient(90deg, #00b4d8, #007bff); border: none;">
+                            ⬅️ Back to search
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-muted mt-3 small">
+                Data provided by <strong>OpenWeather</strong> 🌍
+            </p>
+        </div>
+    </div>
+</div>
