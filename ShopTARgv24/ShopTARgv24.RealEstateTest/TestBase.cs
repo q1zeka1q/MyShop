@@ -8,11 +8,13 @@ using ShopTARgv24.Data;
 using ShopTARgv24.RealEstateTest.Macros;
 using ShopTARgv24.RealEstateTest.Mock;
 
+
 namespace ShopTARgv24.RealEstateTest
 {
     public abstract class TestBase
     {
         protected IServiceProvider serviceProvider { get; set; }
+
         protected TestBase()
         {
             var services = new ServiceCollection();
@@ -22,7 +24,6 @@ namespace ShopTARgv24.RealEstateTest
 
         public virtual void SetupServices(IServiceCollection services)
         {
-
             services.AddScoped<IRealEstateServices, RealEstateServices>();
             services.AddScoped<IFileServices, FileServices>();
             services.AddScoped<IHostEnvironment, MockHostEnvironment>();
@@ -31,7 +32,6 @@ namespace ShopTARgv24.RealEstateTest
             {
                 x.UseInMemoryDatabase("TestDb");
                 x.ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-
             });
 
             RegisterMacros(services);
@@ -40,19 +40,19 @@ namespace ShopTARgv24.RealEstateTest
         private void RegisterMacros(IServiceCollection services)
         {
             var macroBaseType = typeof(IMacros);
+
             var macros = macroBaseType.Assembly.GetTypes()
-                .Where(t => macroBaseType.IsAssignableFrom(t) 
+                .Where(t => macroBaseType.IsAssignableFrom(t)
                 && !t.IsInterface && !t.IsAbstract);
         }
 
         protected T Svc<T>()
         {
-            return serviceProvider.GetRequiredService<T>();
+            return serviceProvider.GetService<T>();
         }
 
         public void Dispose()
         {
-            
         }
     }
 }
