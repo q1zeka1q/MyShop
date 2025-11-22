@@ -128,5 +128,19 @@ namespace ShopTARgv24.ApplicationServices.Services
                 }
             }
         }
+        public async Task <FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto[] dtos)
+        {
+           
+            foreach (var dto in dtos)
+            {
+                var imageId = await _context.FileToDatabase
+                    .FirstOrDefaultAsync(x => x.Id == dto.Id);
+
+                _context.FileToDatabase.Remove(imageId);
+                await _context.SaveChangesAsync();
+            }
+            return null;
+
+        }
     }
 }

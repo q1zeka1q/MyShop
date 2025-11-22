@@ -282,14 +282,16 @@ namespace ShopTARgv24.RealEstateTest
                 ImageTitle = "livingroom.jpg",
                 ImageData = new byte[] { 4, 5, 6 }
             });
-            await db.SaveChangesAsync();
 
             // Act
-            await Svc<IRealEstateServices>().Delete(id);
+            await db.SaveChangesAsync();
+            await Svc <IRealEstateServices>().Delete(id);
+
+            // Act
 
             // Assert
             var leftovers = db.FileToDatabase.Where(x => x.RealEstateId == id).ToList();
-            Assert.NotEmpty(leftovers);
+            Assert.Empty(leftovers);
         }
 
         [Fact]
