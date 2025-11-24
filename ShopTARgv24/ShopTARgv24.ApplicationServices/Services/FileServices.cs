@@ -128,9 +128,9 @@ namespace ShopTARgv24.ApplicationServices.Services
                 }
             }
         }
-        public async Task <FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto[] dtos)
+        public async Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto[] dtos)
         {
-           
+
             foreach (var dto in dtos)
             {
                 var imageId = await _context.FileToDatabase
@@ -141,6 +141,21 @@ namespace ShopTARgv24.ApplicationServices.Services
             }
             return null;
 
+        }
+
+        public async Task<FileToDatabase> RemoveImagesFromDatabase(FileToDatabaseDto dto)
+        {
+
+
+
+            var image = await _context.FileToDatabase
+                .Where(x => x.Id == dto.Id)
+                .FirstOrDefaultAsync();
+
+            _context.FileToDatabase.Remove(image);
+            await _context.SaveChangesAsync();
+
+            return image;
         }
     }
 }

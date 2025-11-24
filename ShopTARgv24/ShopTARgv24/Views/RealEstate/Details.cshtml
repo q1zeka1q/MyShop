@@ -52,9 +52,17 @@
         <div class="form-group row">
             <label asp-for="ModifiedAt" class="col-sm-2 col-form-label"></label>
             @Html.DisplayFor(Model => Model.ModifiedAt)
+
         </div>
 
 
+
+        <div>
+            @foreach (var images in Model.Image)
+            {
+                <partial name="_Images" model="images" />
+            }
+        </div>
 
 
         <form>
