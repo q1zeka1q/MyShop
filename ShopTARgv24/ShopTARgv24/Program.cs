@@ -4,8 +4,7 @@ using ShopTARgv24.ApplicationServices.Services;
 using ShopTARgv24.Core.Domain;
 using ShopTARgv24.Core.ServiceInterface;
 using ShopTARgv24.Data;
-using ShopTARgv24.Models.Spaceships;
-
+using ShopTARgv24.Hubs;
 
 namespace ShopTARgv24
 {
@@ -17,21 +16,39 @@ namespace ShopTARgv24
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSignalR();
 
             builder.Services.AddScoped<ISpaceshipsServices, SpaceshipsServices>();
-            builder.Services.AddScoped<IRealEstateServices, RealEstateServices>();
             builder.Services.AddScoped<IFileServices, FileServices>();
+            builder.Services.AddScoped<IRealEstateServices, RealEstateServices>();
             builder.Services.AddScoped<IWeatherForecastServices, WeatherForecastServices>();
-            builder.Services.AddHttpClient<IChuckNorrisServices, ChuckNorrisServices>();
+            builder.Services.AddScoped<IChuckNorrisServices, ChuckNorrisServices>();
             builder.Services.AddHttpClient<ICocktailService, CocktailService>();
             builder.Services.AddScoped<IEmailServices, EmailServices>();
 
-
+            builder.Services.AddHttpClient<IChuckNorrisServices, ChuckNorrisServices>();
 
             builder.Services.AddDbContext<ShopTARgv24Context>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequiredLength = 6;
+
+                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+            })
+                .AddEntityFrameworkStores<ShopTARgv24Context>()
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("CustomEmailConfirmation");
+            //.AddDefaultUI();
+
+
             var app = builder.Build();
+
+            app.MapControllers().RequireAuthorization();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -41,13 +58,11 @@ namespace ShopTARgv24
                 app.UseHsts();
             }
 
-
-
-            
             app.UseHttpsRedirection();
             app.UseRouting();
-        
+
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseStaticFiles();
 
@@ -56,6 +71,7 @@ namespace ShopTARgv24
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
+            app.MapHub<ChatHub>("/chatHub");
 
             app.Run();
         }
